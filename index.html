@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Mapa Nelderim</title>
+  <link rel="icon" type="image/png" href="favicon_nelderim.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  
   <style>
     html, body {
       margin: 0;
@@ -517,6 +519,15 @@ textarea,
       </div>
       <div id="ankhSubgroup" class="subgroup"></div>
 
+      <div class="control-row">
+        <div class="left">
+          <input type="checkbox" id="toggleCustomPinsGroup">
+          <span>Własne Lokacje</span>
+        </div>
+        <div id="toggleCustomPinsBtn" class="toggle-button"></div>
+      </div>
+      <div id="customPinsSubgroup" class="subgroup"></div>
+      
       <div id="coordsDisplay">
         <div class="coords-inline">
           <span class="coord-x">X: 0</span>
@@ -588,9 +599,9 @@ const toggleGroup = (btnId, subgroupId, open) => {
   }
 };
 
-const cityIcon = L.icon({ iconUrl: 'Gump 30564.png', iconSize: [32, 32], iconAnchor: [16, 16] });
+const cityIcon = L.icon({ iconUrl: 'Gump 40113.png', iconSize: [40, 40], iconAnchor: [20, 20] });
 const dungeonIcon = L.icon({ iconUrl: 'Gump 9804.png', iconSize: [27, 20], iconAnchor: [13, 10] });
-const villageIcon = L.icon({ iconUrl: 'Gump 30565.png', iconSize: [28, 28], iconAnchor: [14, 14] });
+const villageIcon = L.icon({ iconUrl: 'Gump 40118.png', iconSize: [50, 50], iconAnchor: [25, 25] });
 const healerIcon = L.icon({ iconUrl: 'Gump 30560.png', iconSize: [24, 24], iconAnchor: [12, 12] });
 const ankhIcon = L.icon({ iconUrl: 'ankh.png', iconSize: [16, 26], iconAnchor: [8, 13] });
 
@@ -750,7 +761,10 @@ const categories = [
   { data: dungeonData, markers: customDungeons, icon: dungeonIcon, subgroup: dungeonsSubgroup, className: 'dungeon-toggle' },
   { data: villageData, markers: customVillages, icon: villageIcon, subgroup: villagesSubgroup, className: 'village-toggle' },
   { data: healerData, markers: customHealers, icon: healerIcon, subgroup: healersSubgroup, className: 'healer-toggle' },
-  { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' }
+  { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' },
+  { data: {}, markers: {}, icon: L.icon({ iconUrl: 'pin.png', iconSize: [12, 27], iconAnchor: [5, 27] }), subgroup: document.getElementById("customPinsSubgroup"), className: 'custom-pin-toggle' }
+
+  
 ];
 
 categories.forEach(({ data, markers, icon, subgroup, className }) => {
@@ -773,6 +787,11 @@ const toggleConfigs = [
   { selector: '.healer-toggle', markers: customHealers },
   { selector: '.ankh-toggle', markers: customAnkh }
 ];
+
+toggleConfigs.push({
+  selector: '.custom-pin-toggle',
+  markers: categories[categories.length - 1].markers
+});
 
 toggleConfigs.forEach(({ selector, markers }) => {
   document.querySelectorAll(selector).forEach(cb => {
@@ -808,6 +827,8 @@ const subgroupStates = {
   toggleDungeonsBtn: { groupId: 'dungeonsSubgroup' },
   toggleHealersBtn: { groupId: 'healersSubgroup' },
   toggleAnkhBtn: { groupId: 'ankhSubgroup' },
+  toggleCustomPinsBtn: { groupId: 'customPinsSubgroup' }
+
 };
 
 Object.entries(subgroupStates).forEach(([btnId, state]) => {
@@ -869,23 +890,30 @@ Object.entries(subgroupStates).forEach(([btnId, state]) => {
 
     group.addEventListener('transitionend', currentTransitionEnd);
   });
+});
 
-  document.querySelectorAll('.control-row').forEach(row => {
+document.querySelectorAll('.control-row').forEach(row => {
   row.addEventListener('click', (e) => {
-    if (e.target.tagName === 'INPUT') return;
+    if (
+      e.target.tagName === 'INPUT' ||
+      e.target.classList.contains('toggle-button')
+    ) return;
+
     const toggleBtn = row.querySelector('.toggle-button');
-    if (toggleBtn) toggleBtn.click();
+    if (!toggleBtn) return;
+
+    toggleBtn.click(); // Nie dispatch, zwykły click – masz już pełną animację
   });
 });
 
-});
 
 const groupToggles = [
   { groupId: 'toggleCitiesGroup', className: '.city-toggle' },
   { groupId: 'toggleDungeonsGroup', className: '.dungeon-toggle' },
   { groupId: 'toggleVillagesGroup', className: '.village-toggle' },
   { groupId: 'toggleHealersGroup', className: '.healer-toggle' },
-  { groupId: 'toggleAnkhGroup', className: '.ankh-toggle' }
+  { groupId: 'toggleAnkhGroup', className: '.ankh-toggle' },
+  { groupId: 'toggleCustomPinsGroup', className: '.custom-pin-toggle' }
 ];
 
 groupToggles.forEach(({ groupId, className }) => {
@@ -933,13 +961,22 @@ const loadState = () => {
   });
 };
 
-window.addEventListener('load', () => {
+
+window.addEventListener('load', function () {
+  loadCustomPins();
   loadState();
-  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+
+  document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
 
+  // Delikatne opóźnienie – wystarczające dla Edge, Chrome, Opery
+  setTimeout(() => {
+    getPinFromURL();
+  }, 300);
 });
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const zoomInBtn = document.getElementById('zoomIn');
@@ -956,7 +993,8 @@ const allSubgroups = [
   { btn: 'toggleVillagesBtn', group: 'villagesSubgroup' },
   { btn: 'toggleDungeonsBtn', group: 'dungeonsSubgroup' },
   { btn: 'toggleHealersBtn', group: 'healersSubgroup' },
-  { btn: 'toggleAnkhBtn', group: 'ankhSubgroup' }
+  { btn: 'toggleAnkhBtn', group: 'ankhSubgroup' },
+  { btn: 'toggleCustomPinsBtn', group: 'customPinsSubgroup' }
 ];
 
 //Wyszukiwarka
@@ -1147,7 +1185,238 @@ document.addEventListener('mouseup', () => {
   document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
 });
 
-</script>
+map.on('contextmenu', function (e) {
+  const name = prompt("Podaj nazwę lokacji:");
+  if (!name) return;
 
+  const id = 'pin-' + Date.now();
+  const x = Math.round(e.latlng.lng);
+  const y = Math.round(mapHeight - e.latlng.lat);
+
+  const marker = L.marker(e.latlng, {
+    icon: categories[categories.length - 1].icon
+  });
+
+  marker.bindPopup(createPopupContent(id, name));
+  marker.addTo(map);
+  categories[categories.length - 1].markers[id] = marker;
+
+  addCustomPinToSidebar(id, name, true);
+  saveCustomPins();
+
+  const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
+if (groupCheckbox && !groupCheckbox.checked) {
+  groupCheckbox.checked = true;
+  groupCheckbox.dispatchEvent(new Event('change'));
+}
+
+const toggleBtn = document.getElementById('toggleCustomPinsBtn');
+if (toggleBtn && !toggleBtn.classList.contains('open')) {
+  toggleBtn.click(); // kliknięcie uruchamia animację
+}
+});
+
+
+function createPopupContent(id, name) {
+  return (
+    '<strong>' + name + '</strong><br>' +
+    '<button onclick="editPin(\'' + id + '\')">✏️ Edytuj</button> ' +
+    '<button onclick="deletePin(\'' + id + '\')">🗑️ Usuń</button> ' +
+    '<button onclick="sharePin(\'' + id + '\')">🔗 Udostępnij</button>'
+  );
+}
+
+function addCustomPinToSidebar(id, name, checked) {
+  const label = document.createElement('label');
+  label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + name;
+  document.getElementById('customPinsSubgroup').appendChild(label);
+
+  label.querySelector('input').addEventListener('change', function (e) {
+    const marker = categories[categories.length - 1].markers[id];
+    if (e.target.checked) {
+      marker.addTo(map);
+      const el = marker.getElement();
+      if (el) el.classList.add('fade-in');
+    } else {
+      const el = marker.getElement();
+      if (el) {
+        el.classList.remove('fade-in');
+        el.classList.add('fade-out');
+        setTimeout(function () {
+          map.removeLayer(marker);
+          el.classList.remove('fade-out');
+        }, 300);
+      } else {
+        map.removeLayer(marker);
+      }
+    }
+    saveCustomPins();
+  });
+}
+
+function editPin(id) {
+  const newName = prompt("Nowa nazwa pinezki:");
+  if (!newName) return;
+
+  const marker = categories[categories.length - 1].markers[id];
+  if (!marker) return;
+
+  marker.setPopupContent(createPopupContent(id, newName));
+
+  const input = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
+  if (input) {
+    const checked = input.checked;
+    const label = input.parentElement;
+    label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + newName;
+    addCustomPinListeners();
+  }
+
+  saveCustomPins();
+}
+
+function deletePin(id) {
+  const marker = categories[categories.length - 1].markers[id];
+  if (marker) {
+    map.removeLayer(marker);
+  }
+  delete categories[categories.length - 1].markers[id];
+
+  const checkbox = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
+  if (checkbox && checkbox.parentElement) {
+    checkbox.parentElement.remove();
+  }
+
+  saveCustomPins();
+}
+
+function sharePin(id) {
+  const marker = categories[categories.length - 1].markers[id];
+  if (!marker) return;
+
+  const popup = marker.getPopup();
+  const nameMatch = popup.getContent().match(/<strong>(.*?)<\/strong>/);
+  const name = nameMatch ? nameMatch[1] : 'Pinezka';
+  const latlng = marker.getLatLng();
+  const x = Math.round(latlng.lng);
+  const y = Math.round(mapHeight - latlng.lat);
+
+  const url = `${location.origin}${location.pathname}?pin=${encodeURIComponent(name)}&x=${x}&y=${y}`;
+  navigator.clipboard.writeText(url).then(() => {
+    alert('📌 Link skopiowany do schowka:\n' + url);
+  });
+}
+
+function addCustomPinListeners() {
+  document.querySelectorAll('.custom-pin-toggle').forEach(function (cb) {
+    cb.addEventListener('change', function (e) {
+      const id = e.target.dataset.id;
+      const marker = categories[categories.length - 1].markers[id];
+
+      if (e.target.checked) {
+        marker.addTo(map);
+        const el = marker.getElement();
+        if (el) el.classList.add('fade-in');
+      } else {
+        const el = marker.getElement();
+        if (el) {
+          el.classList.remove('fade-in');
+          el.classList.add('fade-out');
+          setTimeout(function () {
+            map.removeLayer(marker);
+            el.classList.remove('fade-out');
+          }, 300);
+        } else {
+          map.removeLayer(marker);
+        }
+      }
+    });
+  });
+}
+
+function saveCustomPins() {
+  const pins = [];
+  const markers = categories[categories.length - 1].markers;
+
+  Object.entries(markers).forEach(function ([id, marker]) {
+    const latlng = marker.getLatLng();
+    const popup = marker.getPopup();
+    const match = popup.getContent().match(/<strong>(.*?)<\/strong>/);
+    const name = match ? match[1] : id;
+    const visible = map.hasLayer(marker);
+
+    pins.push({
+      id: id,
+      name: name,
+      lat: latlng.lat,
+      lng: latlng.lng,
+      visible: visible
+    });
+  });
+
+  localStorage.setItem('customPins', JSON.stringify(pins));
+}
+
+function loadCustomPins() {
+  const saved = JSON.parse(localStorage.getItem('customPins') || '[]');
+
+  saved.forEach(function (pin) {
+    const marker = L.marker([pin.lat, pin.lng], {
+      icon: categories[categories.length - 1].icon
+    }).bindPopup(createPopupContent(pin.id, pin.name));
+
+    if (pin.visible) marker.addTo(map);
+    categories[categories.length - 1].markers[pin.id] = marker;
+
+    addCustomPinToSidebar(pin.id, pin.name, pin.visible);
+  });
+}
+
+function getPinFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const name = decodeURIComponent(params.get('pin') || '');
+  const x = parseInt(params.get('x'), 10);
+  const y = parseInt(params.get('y'), 10);
+
+  if (name && !isNaN(x) && !isNaN(y)) {
+    const id = 'shared-' + name + '-' + x + '-' + y;
+
+    if (!categories[categories.length - 1].markers[id]) {
+      const latlng = [mapHeight - y, x];
+      const marker = L.marker(latlng, {
+        icon: categories[categories.length - 1].icon
+      }).bindPopup(createPopupContent(id, name));
+
+      marker.addTo(map).openPopup();
+      categories[categories.length - 1].markers[id] = marker;
+      addCustomPinToSidebar(id, name, true);
+      saveCustomPins();
+
+      // Zaznacz checkbox pinezki
+      const input = document.querySelector(`.custom-pin-toggle[data-id="${id}"]`);
+      if (input) {
+        input.checked = true;
+        input.dispatchEvent(new Event('change'));
+      }
+
+      // Upewnij się, że grupa "Własne Lokacje" jest zaznaczona i rozwinięta
+      const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
+      if (groupCheckbox && !groupCheckbox.checked) {
+        groupCheckbox.checked = true;
+      }
+
+      toggleGroup('toggleCustomPinsBtn', 'customPinsSubgroup', true);
+      document.getElementById('toggleCustomPinsBtn').classList.add('open');
+
+      // Czyść URL po chwili
+      setTimeout(() => {
+        const cleanURL = location.origin + location.pathname;
+        window.history.replaceState(null, '', cleanURL);
+      }, 1000);
+    }
+  }
+}
+
+
+</script>
 </body>
 </html>
