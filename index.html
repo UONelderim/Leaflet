@@ -25,6 +25,25 @@
       cursor: inherit;
     }
   
+    #versionInfo {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      font-size: 13px;
+      color: rgba(240, 215, 170, 0.28);
+      pointer-events: none;
+      font-family: 'MedievalSharp', cursive;
+      text-shadow: 0 0 6px rgba(0,0,0,0.4);
+      user-select: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #controls.collapsed #versionInfo {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+
     #mainLayout {
       display: flex;
       flex-direction: row;
@@ -436,6 +455,33 @@ textarea,
   to { opacity: 0; }
 }
 
+.popup-btn {
+  background-color: #e0d4aa;         /* jasne pergaminowe tło */
+  border: 1px solid #5f4b1b;         /* ciemna ramka */
+  color: #000;                       /* kolor tekstu */
+  padding: 4px 8px;
+  font-size: 14px;
+  font-family: 'MedievalSharp', cursive;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* Zapobiega łamaniu tekstu */
+  flex-shrink: 0;       /* Nie pozwól zmniejszać przycisków */
+}
+
+.popup-btn:hover {
+  background-color: #c8b97f;
+  color: #000;
+}
+
+.popup-btn-group {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap; /* WAŻNE: zapobiega zawijaniu */
+}
 
   </style>
 </head>
@@ -446,13 +492,13 @@ textarea,
   
     <div class="hide-when-collapsed">
       <div id="logoContainer">
-        <a href="https://nelderim.pl" target="_blank">
+        <a href="https://nelderim.pl" target="_blank" rel="noopener noreferrer">
           <img src="logotyp-new.png" alt="Nelderim logo">
         </a>
       </div>
       
       <div id="searchWrapper" style="position: relative; margin-bottom: 12px;">
-        <input type="text" id="searchBox" placeholder="Szukaj..." style="
+        <input type="text" id="searchBox" placeholder="Szukaj lub dodaj udostępnienie..." style="
           box-sizing: border-box;
           width: 100%;
           padding: 6px 32px 6px 8px;
@@ -539,9 +585,8 @@ textarea,
         <button id="zoomOut">-</button>
       </div>
     </div>
-
+    <div id="versionInfo">v1.0.0 Beta</div>
     <div id="sidebarToggle" title="Zwiń / Rozwiń"></div>
-
   </div>
   <div id="map"></div>
 </div>
@@ -969,13 +1014,7 @@ window.addEventListener('load', function () {
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
-
-  // Delikatne opóźnienie – wystarczające dla Edge, Chrome, Opery
-  setTimeout(() => {
-    getPinFromURL();
-  }, 300);
 });
-
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -996,6 +1035,51 @@ const allSubgroups = [
   { btn: 'toggleAnkhBtn', group: 'ankhSubgroup' },
   { btn: 'toggleCustomPinsBtn', group: 'customPinsSubgroup' }
 ];
+
+document.getElementById('searchBox').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
+    const input = this.value.trim();
+    this.value = '';
+    this.dispatchEvent(new Event('input')); // <-- tu resetujemy filtrację!
+    const parts = input.split(";");
+
+    if (parts.length >= 3) {
+      const name = parts[0];
+      const x = parseFloat(parts[1]);
+      const y = parseFloat(parts[2]);
+      const description = parts.slice(3).join(";");
+
+      if (!isNaN(x) && !isNaN(y)) {
+        const id = 'pin-' + Date.now();
+        const marker = L.marker([mapHeight - y, x], {
+          icon: categories[categories.length - 1].icon
+        }).bindPopup(createPopupContent(id, name));
+
+        marker.addTo(map);
+        categories[categories.length - 1].markers[id] = marker;
+        addCustomPinToSidebar(id, name, true);
+        saveCustomPins();
+
+        const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
+        if (groupCheckbox && !groupCheckbox.checked) {
+          groupCheckbox.checked = true;
+          groupCheckbox.dispatchEvent(new Event('change'));
+        }
+
+        const toggleBtn = document.getElementById('toggleCustomPinsBtn');
+        if (toggleBtn && !toggleBtn.classList.contains('open')) {
+          toggleBtn.click();
+        }
+
+        map.flyTo([mapHeight - y, x], 1, {
+          animate: true,
+          duration: 4.0,      // wolniejsze przybliżanie
+          easeLinearity: 0.2  // łagodniejsze tempo
+        });
+      }
+    }
+  }
+});
 
 //Wyszukiwarka
 document.getElementById('searchBox').addEventListener('input', function () {
@@ -1200,9 +1284,8 @@ map.on('contextmenu', function (e) {
   marker.bindPopup(createPopupContent(id, name));
   marker.addTo(map);
   categories[categories.length - 1].markers[id] = marker;
-
+  saveCustomPins(); // <- ZAPISZ od razu po dodaniu znacznika
   addCustomPinToSidebar(id, name, true);
-  saveCustomPins();
 
   const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
 if (groupCheckbox && !groupCheckbox.checked) {
@@ -1220,9 +1303,11 @@ if (toggleBtn && !toggleBtn.classList.contains('open')) {
 function createPopupContent(id, name) {
   return (
     '<strong>' + name + '</strong><br>' +
-    '<button onclick="editPin(\'' + id + '\')">✏️ Edytuj</button> ' +
-    '<button onclick="deletePin(\'' + id + '\')">🗑️ Usuń</button> ' +
-    '<button onclick="sharePin(\'' + id + '\')">🔗 Udostępnij</button>'
+    '<div class="popup-btn-group">' +
+      '<button class="popup-btn" onclick="editPin(\'' + id + '\')">✏️ Edytuj</button>' +
+      '<button class="popup-btn" onclick="deletePin(\'' + id + '\')">🗑️ Usuń</button>' +
+      '<button class="popup-btn" onclick="sharePin(\'' + id + '\')">🔗 Udostępnij</button>' +
+    '</div>'
   );
 }
 
@@ -1300,10 +1385,11 @@ function sharePin(id) {
   const x = Math.round(latlng.lng);
   const y = Math.round(mapHeight - latlng.lat);
 
-  const url = `${location.origin}${location.pathname}?pin=${encodeURIComponent(name)}&x=${x}&y=${y}`;
-  navigator.clipboard.writeText(url).then(() => {
-    alert('📌 Link skopiowany do schowka:\n' + url);
-  });
+  const pinText = `${name};${x};${y};`;
+  navigator.clipboard.writeText(pinText).then(() => {
+    alert('📌 Dane pinezki skopiowane do schowka:\n' + pinText);
+});
+
 }
 
 function addCustomPinListeners() {
@@ -1370,52 +1456,6 @@ function loadCustomPins() {
     addCustomPinToSidebar(pin.id, pin.name, pin.visible);
   });
 }
-
-function getPinFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const name = decodeURIComponent(params.get('pin') || '');
-  const x = parseInt(params.get('x'), 10);
-  const y = parseInt(params.get('y'), 10);
-
-  if (name && !isNaN(x) && !isNaN(y)) {
-    const id = 'shared-' + name + '-' + x + '-' + y;
-
-    if (!categories[categories.length - 1].markers[id]) {
-      const latlng = [mapHeight - y, x];
-      const marker = L.marker(latlng, {
-        icon: categories[categories.length - 1].icon
-      }).bindPopup(createPopupContent(id, name));
-
-      marker.addTo(map).openPopup();
-      categories[categories.length - 1].markers[id] = marker;
-      addCustomPinToSidebar(id, name, true);
-      saveCustomPins();
-
-      // Zaznacz checkbox pinezki
-      const input = document.querySelector(`.custom-pin-toggle[data-id="${id}"]`);
-      if (input) {
-        input.checked = true;
-        input.dispatchEvent(new Event('change'));
-      }
-
-      // Upewnij się, że grupa "Własne Lokacje" jest zaznaczona i rozwinięta
-      const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
-      if (groupCheckbox && !groupCheckbox.checked) {
-        groupCheckbox.checked = true;
-      }
-
-      toggleGroup('toggleCustomPinsBtn', 'customPinsSubgroup', true);
-      document.getElementById('toggleCustomPinsBtn').classList.add('open');
-
-      // Czyść URL po chwili
-      setTimeout(() => {
-        const cleanURL = location.origin + location.pathname;
-        window.history.replaceState(null, '', cleanURL);
-      }, 1000);
-    }
-  }
-}
-
 
 </script>
 </body>
