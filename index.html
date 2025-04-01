@@ -483,9 +483,48 @@ textarea,
   flex-wrap: nowrap; /* WAŻNE: zapobiega zawijaniu */
 }
 
+#pinIconSelector {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  background-image: url('Gump 1588.png');
+  background-size: 100% 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  animation: popupFadeIn 0.35s ease-out;
+  transform-origin: top center;
+}
+
+#pinIcons img {
+  width: 27px;
+  height: auto;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+#pinIcons img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px #b08e53;
+}
+
+.pin-icon-title {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 18px;
+  color: #000000;
+  text-align: center;
+  text-shadow: 0 0 6px #000;
+}
+
   </style>
 </head>
 <body>
+<div id="pinIconSelector">
+  <div class="pin-icon-title">Wybierz kolor znacznika:</div>
+  <div id="pinIcons" style="display: flex; gap: 6px; margin-top: 8px;"></div>
+ </div>
   <!-- Kontrolki, mapa i współrzędne -->
 <div id="mainLayout">
   <div id="controls">
@@ -585,12 +624,11 @@ textarea,
         <button id="zoomOut">-</button>
       </div>
     </div>
-    <div id="versionInfo">v1.0.0 Beta</div>
+    <div id="versionInfo">v1.1.0 Beta</div>
     <div id="sidebarToggle" title="Zwiń / Rozwiń"></div>
   </div>
   <div id="map"></div>
 </div>
-
 
 <script>
 const mapWidth = 7168;
@@ -801,13 +839,23 @@ const ankhData = {
 const customAnkh = {};
 const ankhSubgroup = document.getElementById("ankhSubgroup");
 
+const customPinIcons = [
+  L.icon({ iconUrl: 'RedPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),     
+  L.icon({ iconUrl: 'OrangePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),   
+  L.icon({ iconUrl: 'YellowPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),  
+  L.icon({ iconUrl: 'GreenPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),   
+  L.icon({ iconUrl: 'BluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),     
+  L.icon({ iconUrl: 'DarkBluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),  
+  L.icon({ iconUrl: 'PinkPin.png', iconSize: [12, 27], iconAnchor: [6, 27] })       
+];
+
 const categories = [
   { data: cityData, markers: cityMarkers, icon: cityIcon, subgroup: citiesSubgroup, className: 'city-toggle' },
   { data: dungeonData, markers: customDungeons, icon: dungeonIcon, subgroup: dungeonsSubgroup, className: 'dungeon-toggle' },
   { data: villageData, markers: customVillages, icon: villageIcon, subgroup: villagesSubgroup, className: 'village-toggle' },
   { data: healerData, markers: customHealers, icon: healerIcon, subgroup: healersSubgroup, className: 'healer-toggle' },
   { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' },
-  { data: {}, markers: {}, icon: L.icon({ iconUrl: 'pin.png', iconSize: [12, 27], iconAnchor: [5, 27] }), subgroup: document.getElementById("customPinsSubgroup"), className: 'custom-pin-toggle' }
+  { data: {}, markers: {}, icon: L.icon({ iconUrl: 'PinkPin.png', iconSize: [12, 27], iconAnchor: [5, 27] }), subgroup: document.getElementById("customPinsSubgroup"), className: 'custom-pin-toggle' }
 
   
 ];
@@ -1219,14 +1267,11 @@ document.addEventListener('mousedown', (e) => {
   const radius = 500; // możesz zmienić np. na 20
 
   if (distance > radius) {
-    console.log(`Klik za daleko od hotspota (${Math.round(distance)}px)`);
     // zablokuj klik
     e.preventDefault();
     e.stopPropagation();
     return;
   }
-
-  console.log(`✔ Klik w promieniu hotspota (${Math.round(distance)}px)`);
 
   // jeśli w promieniu – pozwól kliknąć (np. checkbox działa)
   isClicking = true;
@@ -1270,35 +1315,55 @@ document.addEventListener('mouseup', () => {
 });
 
 map.on('contextmenu', function (e) {
+  const selector = document.getElementById('pinIconSelector');
+  const iconsContainer = document.getElementById('pinIcons');
+  iconsContainer.innerHTML = ''; // wyczyść poprzednie
+
+  customPinIcons.forEach((icon, index) => {
+    const img = document.createElement('img');
+    img.src = icon.options.iconUrl;
+    img.style.width = '27px';
+    img.style.height = 'auto';
+    img.style.cursor = 'pointer';
+    img.title = `Ikona ${index + 1}`;
+    img.addEventListener('click', () => {
+      selector.style.display = 'none';
+      createCustomPin(e.latlng, icon, index);
+    });
+    iconsContainer.appendChild(img);
+  });
+
+  selector.style.left = e.containerPoint.x + 'px';
+  selector.style.top = e.containerPoint.y + 'px';
+  selector.style.display = 'block';
+});
+
+function createCustomPin(latlng, icon, iconIndex) {
   const name = prompt("Podaj nazwę lokacji:");
   if (!name) return;
 
   const id = 'pin-' + Date.now();
-  const x = Math.round(e.latlng.lng);
-  const y = Math.round(mapHeight - e.latlng.lat);
 
-  const marker = L.marker(e.latlng, {
-    icon: categories[categories.length - 1].icon
-  });
-
+  const marker = L.marker(latlng, { icon: icon });
   marker.bindPopup(createPopupContent(id, name));
   marker.addTo(map);
+  marker.options.iconIndex = iconIndex;
+
   categories[categories.length - 1].markers[id] = marker;
-  saveCustomPins(); // <- ZAPISZ od razu po dodaniu znacznika
   addCustomPinToSidebar(id, name, true);
+  saveCustomPins();
 
   const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
-if (groupCheckbox && !groupCheckbox.checked) {
-  groupCheckbox.checked = true;
-  groupCheckbox.dispatchEvent(new Event('change'));
-}
+  if (groupCheckbox && !groupCheckbox.checked) {
+    groupCheckbox.checked = true;
+    groupCheckbox.dispatchEvent(new Event('change'));
+  }
 
-const toggleBtn = document.getElementById('toggleCustomPinsBtn');
-if (toggleBtn && !toggleBtn.classList.contains('open')) {
-  toggleBtn.click(); // kliknięcie uruchamia animację
+  const toggleBtn = document.getElementById('toggleCustomPinsBtn');
+  if (toggleBtn && !toggleBtn.classList.contains('open')) {
+    toggleBtn.click();
+  }
 }
-});
-
 
 function createPopupContent(id, name) {
   return (
@@ -1435,8 +1500,10 @@ function saveCustomPins() {
       name: name,
       lat: latlng.lat,
       lng: latlng.lng,
-      visible: visible
+      visible: visible,
+      iconIndex: marker.options.iconIndex ?? 0
     });
+
   });
 
   localStorage.setItem('customPins', JSON.stringify(pins));
@@ -1447,8 +1514,10 @@ function loadCustomPins() {
 
   saved.forEach(function (pin) {
     const marker = L.marker([pin.lat, pin.lng], {
-      icon: categories[categories.length - 1].icon
+      icon: customPinIcons[pin.iconIndex] || customPinIcons[0]
     }).bindPopup(createPopupContent(pin.id, pin.name));
+
+    marker.options.iconIndex = pin.iconIndex;
 
     if (pin.visible) marker.addTo(map);
     categories[categories.length - 1].markers[pin.id] = marker;
@@ -1456,6 +1525,13 @@ function loadCustomPins() {
     addCustomPinToSidebar(pin.id, pin.name, pin.visible);
   });
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const sel = document.getElementById('pinIconSelector');
+    sel.style.display = 'none';
+  }
+});
 
 </script>
 </body>
