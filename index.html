@@ -624,7 +624,7 @@ textarea,
         <button id="zoomOut">-</button>
       </div>
     </div>
-    <div id="versionInfo">v1.1.0 Beta</div>
+    <div id="versionInfo">v1.2.0 Beta</div>
     <div id="sidebarToggle" title="Zwiń / Rozwiń"></div>
   </div>
   <div id="map"></div>
@@ -685,7 +685,7 @@ const toggleGroup = (btnId, subgroupId, open) => {
 const cityIcon = L.icon({ iconUrl: 'Gump 40113.png', iconSize: [40, 40], iconAnchor: [20, 20] });
 const dungeonIcon = L.icon({ iconUrl: 'Gump 9804.png', iconSize: [27, 20], iconAnchor: [13, 10] });
 const villageIcon = L.icon({ iconUrl: 'Gump 40118.png', iconSize: [50, 50], iconAnchor: [25, 25] });
-const healerIcon = L.icon({ iconUrl: 'Gump 30560.png', iconSize: [24, 24], iconAnchor: [12, 12] });
+const healerIcon = L.icon({ iconUrl: 'HealerIcon.png', iconSize: [20, 30], iconAnchor: [10, 30] });
 const ankhIcon = L.icon({ iconUrl: 'ankh.png', iconSize: [16, 26], iconAnchor: [8, 13] });
 
 const cityData = {
@@ -766,8 +766,50 @@ const customVillages = {};
 const villagesSubgroup = document.getElementById("villagesSubgroup");
 
 const healerData = {
-  tasandoraHeal: [740, 480, "Uzdrowiciel – Tasandora"],
-  tirassaHeal: [470, 685, "Uzdrowiciel – Tirassa"]
+  Healer1: [1511, 1515, "Chata Na Wodzie"],
+  Healer2: [983, 1121, "Ferion"],
+  Healer3: [2350, 2553, "Oaza"],
+  Healer4: [1015, 693, "Garlan"],
+  Healer5: [5874, 317, "Noamuth Quortek"],
+  Healer6: [945, 1420, "Tafroel"],
+  Healer7: [589, 2044, "Orod"],
+  Healer8: [2067, 2002, "Celendir"],
+  Healer9: [1167, 1607, "Talas"],
+  Healer11: [5590, 1077, "Twierdza"],
+  Healer12: [2062, 2685, "Tirassa"],
+  Healer13: [5384, 2002, "L'Delmah"],
+  Healer14: [1387, 2009, "Tasandora"],
+  Healer15: [1433, 1824, "Tasandora Centrum"],
+  Healer16: [1451, 1389, "Ruth"],
+  Healer17: [5537, 2923, "Płytki Podmrok"],
+  Healer18: [3795, 1922, "Arnad-I-Edhil"],
+  Healer19: [1600, 2157, "Rozdroże Podzamcze"],
+  Healer20: [1829, 3066, "Falas"],
+  Healer21: [1028, 2202, "Belegost"],
+  Healer22: [1612, 2715, "Falas Obok Ulnhyr Orbben"],
+  Healer23: [1492, 842, "Elbrind"],
+  Healer24: [2820, 1920, "Leże Ognistych Smoków"],
+  Healer25: [277, 555, "Śnieżna Wyspa"],
+  Healer26: [2082, 3207, "Falas Bagna"],
+  Healer27: [1107, 2557, "Hurengrav"],
+  Healer28: [420, 1300, "Wąwóz Przy Wulkanie"],
+  Healer29: [1225, 678, "Geriador"],
+  Healer30: [1935, 2461, "Falas Obóz Orków"],
+  Healer31: [1190, 2823, "Garth"],
+  Healer32: [2203, 1993, "Rozdroże Celendir"],
+  Healer33: [2891, 2098, "Orda Kanion"],
+  Healer34: [1392, 1307, "Barad-dur"],
+  Healer35: [2214, 2363, "Orda Brama"],
+  Healer36: [800, 1688, "Most Przy Rozdrożu"],
+  Healer37: [1830, 2902, "Falas Ruiny"],
+  Healer38: [560, 1850, "Rozdroże Orod"],
+  Healer39: [1814, 2100, "Rozdroże Tasandora"],
+  Healer40: [489, 1446, "Leże Troli"],
+  Healer41: [664, 1033, "Brama Geriadoru"],
+  Healer42: [852, 1451, "Granica Ethrod-Tafroel"],
+  Healer43: [3150, 1894, "Brama Międzykontynentalna"],
+  Healer43: [3534, 1985, "Brama Pedanin"],
+  Healer43: [2772, 2485, "Most Pustynia Lalith"]
 };
 const customHealers = {};
 const healersSubgroup = document.getElementById("healersSubgroup");
@@ -833,7 +875,7 @@ const ankhData = {
   AnkhWulkan: [576, 1280, "Wulkan"],
   AnkhWyspaGeriador: [210, 635, "Śnieżna Wyspa"],
   AnkhWyspaVoxPopuli: [4110, 3782, "Wyspa Vox Populi"],
-  JaskiniaMelisande: [3279, 1897, "Jaskinia Melisande"]
+  AnkhJaskiniaMelisande: [3279, 1897, "Jaskinia Melisande "]
 };
 
 const customAnkh = {};
