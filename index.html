@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Mapa Nelderim</title>
-  <link rel="icon" type="image/png" href="favicon_nelderim.png">
+  <link rel="icon" type="image/png" href="assets/favicon_nelderim.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
@@ -104,15 +104,35 @@
       </div>
 
       <div id="sidebarBottom">
-        <div id="versionInfo">v1.2.1 Beta</div>
+        <div id="versionInfo">v1.2.2 Beta</div>
+        <button id="infoButton" title="Informacje o mapie">ℹ️</button>
         <div id="sidebarToggle" title="Zwiń / Rozwiń"></div>
       </div>
-      
 
     </div>
     <div id="map"></div>
   </div>
-  <script src="scripts.js"></script>
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Informacje o Mapie Nelderim</h2>
+      <ul class="dash-list">
+        <li>Wyszukaj interesujące Cię miejsce w polu z lupą np: Tasandora 🔍</li>
+        <li>Kliknij prawym przyciskiem myszy, aby dodać własną pinezkę 📍 </li>
+        <li>Pinezki zapisywane są lokalnie w przeglądarce 💾</li>
+        <li>Podziel się swoimi pinezkami udostępniając je innym 🔗</li>
+        <li>Wyszukiwarka pozwala wklejać udostępnione pinezki od innych ✨</li>
+        <li>Kursor śledzi Twoje ruchy podając koordynaty 🧭</li>
+        <li>Dowolnie rozwijaj zakładki mapy przyciskami w menu <img src="assets/Gump 5602.png" class="inline-icon"></li>
+        <li>Przełączaj widoczność poszczególnych kategorii  <img src="assets/Gump 5830.png" class="inline-icon"> / <img src="assets/Gump 5828.png" class="inline-icon"> </li>
+      </ul>
+      <p>Masz propozycję? Skontakuj się z nami na naszym kanale <a href="https://discord.gg/GDyGncD" target="_blank" rel="noopener noreferrer">Discord 💬</a>
+      
+    </div>
+  </div>
+
+<script src="scripts.js"></script>
+
 </body>
 
 </html>

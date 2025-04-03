@@ -57,12 +57,12 @@ const ankhIcon = L.icon({ iconUrl: 'assets/ankh.png', iconSize: [16, 26], iconAn
 
 const cityData = {
   tasandora: [1418, 1872, "Tasandora"],
-  garlan:    [1058, 592, "Garlan"],
-  orod:      [658, 2009, "Orod"],
-  lotharn:   [1875, 503, "Lotharn"],
-  ldelmah:   [5742, 3307, "L'Delmah"],
-  twierdza:  [2550, 1771, "Twierdza"],
-  tirassa:   [2067, 2699, "Tirassa"]
+  garlan: [1058, 592, "Garlan"],
+  orod: [658, 2009, "Orod"],
+  lotharn: [1875, 503, "Lotharn"],
+  ldelmah: [5742, 3307, "L'Delmah"],
+  twierdza: [2550, 1771, "Twierdza"],
+  tirassa: [2067, 2699, "Tirassa"]
 };
 
 const cityMarkers = {};
@@ -79,7 +79,7 @@ const dungeonData = {
   hurengrav: [1006, 2717, "Hurengrav"],
   jaskiniaBlyskow: [3384, 1955, "Jaskinia Błysków"],
   jaskiniaMelisande: [3284, 1895, "Jaskinia Melisande"],
-  jaskiniaOrkow:[2250, 2262, "Jaskinia Orków"],
+  jaskiniaOrkow: [2250, 2262, "Jaskinia Orków"],
   kanalyTasandory: [1311, 2000, "Kanały Tasandory"],
   krolewskieKrypty: [823, 575, "Królewskie Krypty"],
   krysztalowaJaskinia: [3384, 1954, "Kryształowa Jaskinia"],
@@ -250,13 +250,13 @@ const customAnkh = {};
 const ankhSubgroup = document.getElementById("ankhSubgroup");
 
 const customPinIcons = [
-  L.icon({ iconUrl: 'assets/RedPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),     
-  L.icon({ iconUrl: 'assets/OrangePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),   
-  L.icon({ iconUrl: 'assets/YellowPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),  
-  L.icon({ iconUrl: 'assets/GreenPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),   
-  L.icon({ iconUrl: 'assets/BluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),     
-  L.icon({ iconUrl: 'assets/DarkBluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),  
-  L.icon({ iconUrl: 'assets/PinkPin.png', iconSize: [12, 27], iconAnchor: [6, 27] })       
+  L.icon({ iconUrl: 'assets/RedPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/OrangePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/YellowPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/GreenPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/BluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/DarkBluePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
+  L.icon({ iconUrl: 'assets/PinkPin.png', iconSize: [12, 27], iconAnchor: [6, 27] })
 ];
 
 const categories = [
@@ -267,7 +267,7 @@ const categories = [
   { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' },
   { data: {}, markers: {}, icon: L.icon({ iconUrl: 'assets/PinkPin.png', iconSize: [12, 27], iconAnchor: [5, 27] }), subgroup: document.getElementById("customPinsSubgroup"), className: 'custom-pin-toggle' }
 
-  
+
 ];
 
 categories.forEach(({ data, markers, icon, subgroup, className }) => {
@@ -342,10 +342,10 @@ Object.entries(subgroupStates).forEach(([btnId, state]) => {
 
 
   btn.addEventListener('click', (e) => {
-  e.stopPropagation(); //  zatrzymuje kliknięcie, by nie leciało dalej
+    e.stopPropagation(); //  zatrzymuje kliknięcie, by nie leciało dalej
 
-  const isNowOpen = !btn.classList.contains('open');
-  btn.classList.toggle('open', isNowOpen);
+    const isNowOpen = !btn.classList.contains('open');
+    btn.classList.toggle('open', isNowOpen);
 
     // Przerwij bieżącą animację
     group.style.transition = 'none';
@@ -474,16 +474,6 @@ window.addEventListener('load', function () {
   });
 });
 
-
-window.addEventListener('DOMContentLoaded', () => {
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
-
-  if (zoomInBtn && zoomOutBtn) {
-    zoomInBtn.addEventListener('click', () => map.zoomIn());
-    zoomOutBtn.addEventListener('click', () => map.zoomOut());
-  }
-});
 
 const allSubgroups = [
   { btn: 'toggleCitiesBtn', group: 'citiesSubgroup' },
@@ -628,190 +618,270 @@ toggleBtn.addEventListener('click', () => {
 //NEXT SCRIPT
 
 const cursors = {
-    n:  { file: 'assets/glove-n.png',  hotspot: [7, 1] },
-    ne: { file: 'assets/glove-ne.png', hotspot: [28, 2] },
-    e:  { file: 'assets/glove-e.png',  hotspot: [41, 9] },
-    se: { file: 'assets/glove-se.png', hotspot: [35, 24] },
-    s:  { file: 'assets/glove-s.png',  hotspot: [14, 32] },
-    sw: { file: 'assets/glove-sw.png', hotspot: [2, 26] },
-    w:  { file: 'assets/glove-w.png',  hotspot: [1, 9] },
-    nw: { file: 'assets/glove-nw.png', hotspot: [1, 1] }
-  };
-  
-  const clickStages = [
-    { file: 'click1st_stage.png', hotspot: [1, 1] },
-    { file: 'click2nd_stage.png', hotspot: [1, 7] },
-    { file: 'assets/click3rd_stage.png', hotspot: [4, 4] }
-  ];
-  
-  let currentDirection = 'nw';
-  let clickTimeout = null;
-  let clickHoldTimeout = null;
-  let isClicking = false;
-  let lastMouseX = 0;
-  let lastMouseY = 0;
-  const radius = 50;
-  
-  // Domyślny kursor
-  const { file, hotspot } = cursors['nw'];
-  document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
-  
-  // Obsługa kierunku
-  document.addEventListener('mousemove', (e) => {
-    if (clickTimeout) return;
-  
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    const dx = e.clientX - centerX;
-    const dy = e.clientY - centerY;
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-  
-    let dir = 'nw';
-    if (angle >= -10 && angle < 10) dir = 'e';
-    else if (angle >= 10 && angle < 60) dir = 'se';
-    else if (angle >= 60 && angle < 120) dir = 's';
-    else if (angle >= 120 && angle < 170) dir = 'sw';
-    else if (angle >= 170 || angle < -170) dir = 'w';
-    else if (angle >= -170 && angle < -120) dir = 'nw';
-    else if (angle >= -120 && angle < -60) dir = 'n';
-    else if (angle >= -60 && angle < -10) dir = 'ne';
-  
-    if (dir !== currentDirection) {
-      currentDirection = dir;
-      const { file, hotspot } = cursors[dir];
-      document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
-    }
-  
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
-  });
-  
-  document.addEventListener('mousedown', (e) => {
-    if (e.button !== 0) return; // tylko LPM
-  
-    const dx = Math.abs(e.clientX - lastMouseX);
-    const dy = Math.abs(e.clientY - lastMouseY);
-    const distance = Math.sqrt(dx * dx + dy * dy);
-  
-    const radius = 500; // możesz zmienić np. na 20
-  
-    if (distance > radius) {
-      // zablokuj klik
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-  
-    // jeśli w promieniu – pozwól kliknąć (np. checkbox działa)
-    isClicking = true;
-  
-    // animacja – tylko jeśli LPM trzymany ≥ 500ms
-    clickHoldTimeout = setTimeout(() => {
-      if (!isClicking) return;
-  
-      const stage1 = clickStages[0];
-      const stage2 = clickStages[1];
-      const stage3 = clickStages[2];
-  
-      document.body.style.cursor = `url(${stage1.file}) ${stage1.hotspot[0]} ${stage1.hotspot[1]}, auto`;
-  
-      clickTimeout = setTimeout(() => {
-        document.body.style.cursor = `url(${stage2.file}) ${stage2.hotspot[0]} ${stage2.hotspot[1]}, auto`;
-  
-        clickTimeout = setTimeout(() => {
-          document.body.style.cursor = `url(${stage3.file}) ${stage3.hotspot[0]} ${stage3.hotspot[1]}, auto`;
-        }, 70);
-      }, 70);
-  
-    }, 300);
-  });
-  
-  document.addEventListener('mouseup', () => {
-    isClicking = false;
-  
-    if (clickHoldTimeout) {
-      clearTimeout(clickHoldTimeout);
-      clickHoldTimeout = null;
-    }
-  
-    if (clickTimeout) {
-      clearTimeout(clickTimeout);
-      clickTimeout = null;
-    }
-  
-    const { file, hotspot } = cursors[currentDirection];
+  n: { file: 'assets/glove-n.png', hotspot: [7, 1] },
+  ne: { file: 'assets/glove-ne.png', hotspot: [28, 2] },
+  e: { file: 'assets/glove-e.png', hotspot: [41, 9] },
+  se: { file: 'assets/glove-se.png', hotspot: [35, 24] },
+  s: { file: 'assets/glove-s.png', hotspot: [14, 32] },
+  sw: { file: 'assets/glove-sw.png', hotspot: [2, 26] },
+  w: { file: 'assets/glove-w.png', hotspot: [1, 9] },
+  nw: { file: 'assets/glove-nw.png', hotspot: [1, 1] }
+};
+
+const clickStages = [
+  { file: 'click1st_stage.png', hotspot: [1, 1] },
+  { file: 'click2nd_stage.png', hotspot: [1, 7] },
+  { file: 'assets/click3rd_stage.png', hotspot: [4, 4] }
+];
+
+let currentDirection = 'nw';
+let clickTimeout = null;
+let clickHoldTimeout = null;
+let isClicking = false;
+let lastMouseX = 0;
+let lastMouseY = 0;
+const radius = 50;
+
+// Domyślny kursor
+const { file, hotspot } = cursors['nw'];
+document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
+
+// Obsługa kierunku
+document.addEventListener('mousemove', (e) => {
+  if (clickTimeout) return;
+
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  const dx = e.clientX - centerX;
+  const dy = e.clientY - centerY;
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  let dir = 'nw';
+  if (angle >= -10 && angle < 10) dir = 'e';
+  else if (angle >= 10 && angle < 60) dir = 'se';
+  else if (angle >= 60 && angle < 120) dir = 's';
+  else if (angle >= 120 && angle < 170) dir = 'sw';
+  else if (angle >= 170 || angle < -170) dir = 'w';
+  else if (angle >= -170 && angle < -120) dir = 'nw';
+  else if (angle >= -120 && angle < -60) dir = 'n';
+  else if (angle >= -60 && angle < -10) dir = 'ne';
+
+  if (dir !== currentDirection) {
+    currentDirection = dir;
+    const { file, hotspot } = cursors[dir];
     document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
-  });
-  
-  map.on('contextmenu', function (e) {
-    const selector = document.getElementById('pinIconSelector');
-    const iconsContainer = document.getElementById('pinIcons');
-    iconsContainer.innerHTML = ''; // wyczyść poprzednie
-  
-    customPinIcons.forEach((icon, index) => {
-      const img = document.createElement('img');
-      img.src = icon.options.iconUrl;
-      img.style.width = '15px';
-      img.style.height = 'auto';
-      img.style.cursor = 'pointer';
-      img.title = `Ikona ${index + 1}`;
-      img.addEventListener('click', () => {
-        selector.style.display = 'none';
-        createCustomPin(e.latlng, icon, index);
-      });
-      iconsContainer.appendChild(img);
+  }
+
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+});
+
+document.addEventListener('mousedown', (e) => {
+  if (e.button !== 0) return; // tylko LPM
+
+  const dx = Math.abs(e.clientX - lastMouseX);
+  const dy = Math.abs(e.clientY - lastMouseY);
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  const radius = 500; // możesz zmienić np. na 20
+
+  if (distance > radius) {
+    // zablokuj klik
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+
+  // jeśli w promieniu – pozwól kliknąć (np. checkbox działa)
+  isClicking = true;
+
+  // animacja – tylko jeśli LPM trzymany ≥ 500ms
+  clickHoldTimeout = setTimeout(() => {
+    if (!isClicking) return;
+
+    const stage1 = clickStages[0];
+    const stage2 = clickStages[1];
+    const stage3 = clickStages[2];
+
+    document.body.style.cursor = `url(${stage1.file}) ${stage1.hotspot[0]} ${stage1.hotspot[1]}, auto`;
+
+    clickTimeout = setTimeout(() => {
+      document.body.style.cursor = `url(${stage2.file}) ${stage2.hotspot[0]} ${stage2.hotspot[1]}, auto`;
+
+      clickTimeout = setTimeout(() => {
+        document.body.style.cursor = `url(${stage3.file}) ${stage3.hotspot[0]} ${stage3.hotspot[1]}, auto`;
+      }, 70);
+    }, 70);
+
+  }, 300);
+});
+
+document.addEventListener('mouseup', () => {
+  isClicking = false;
+
+  if (clickHoldTimeout) {
+    clearTimeout(clickHoldTimeout);
+    clickHoldTimeout = null;
+  }
+
+  if (clickTimeout) {
+    clearTimeout(clickTimeout);
+    clickTimeout = null;
+  }
+
+  const { file, hotspot } = cursors[currentDirection];
+  document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
+});
+
+map.on('contextmenu', function (e) {
+  const selector = document.getElementById('pinIconSelector');
+  const iconsContainer = document.getElementById('pinIcons');
+  iconsContainer.innerHTML = ''; // wyczyść poprzednie
+
+  customPinIcons.forEach((icon, index) => {
+    const img = document.createElement('img');
+    img.src = icon.options.iconUrl;
+    img.style.width = '15px';
+    img.style.height = 'auto';
+    img.style.cursor = 'pointer';
+    img.title = `Ikona ${index + 1}`;
+    img.addEventListener('click', () => {
+      selector.style.display = 'none';
+      createCustomPin(e.latlng, icon, index);
     });
-  
-    selector.style.left = e.containerPoint.x + 'px';
-    selector.style.top = e.containerPoint.y + 'px';
-    selector.style.display = 'block';
+    iconsContainer.appendChild(img);
   });
-  
-  function createCustomPin(latlng, icon, iconIndex) {
-    const name = prompt("Podaj nazwę lokacji:");
-    if (!name) return;
-  
-    const id = 'pin-' + Date.now();
-  
-    const marker = L.marker(latlng, { icon: icon });
-    marker.bindPopup(createPopupContent(id, name));
-    marker.addTo(map);
-    marker.options.iconIndex = iconIndex;
-  
-    categories[categories.length - 1].markers[id] = marker;
-    addCustomPinToSidebar(id, name, true);
+
+  selector.style.left = e.containerPoint.x + 'px';
+  selector.style.top = e.containerPoint.y + 'px';
+  selector.style.display = 'block';
+});
+
+function createCustomPin(latlng, icon, iconIndex) {
+  const name = prompt("Podaj nazwę lokacji:");
+  if (!name) return;
+
+  const id = 'pin-' + Date.now();
+
+  const marker = L.marker(latlng, { icon: icon });
+  marker.bindPopup(createPopupContent(id, name));
+  marker.addTo(map);
+  marker.options.iconIndex = iconIndex;
+
+  categories[categories.length - 1].markers[id] = marker;
+  addCustomPinToSidebar(id, name, true);
+  saveCustomPins();
+
+  const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
+  if (groupCheckbox && !groupCheckbox.checked) {
+    groupCheckbox.checked = true;
+    groupCheckbox.dispatchEvent(new Event('change'));
+  }
+
+  const toggleBtn = document.getElementById('toggleCustomPinsBtn');
+  if (toggleBtn && !toggleBtn.classList.contains('open')) {
+    toggleBtn.click();
+  }
+}
+
+function createPopupContent(id, name) {
+  return (
+    '<strong>' + name + '</strong><br>' +
+    '<div class="popup-btn-group">' +
+    '<button class="popup-btn" onclick="editPin(\'' + id + '\')">✏️ Edytuj</button>' +
+    '<button class="popup-btn" onclick="deletePin(\'' + id + '\')">🗑️ Usuń</button>' +
+    '<button class="popup-btn" onclick="sharePin(\'' + id + '\')">🔗 Udostępnij</button>' +
+    '</div>'
+  );
+}
+
+function addCustomPinToSidebar(id, name, checked) {
+  const label = document.createElement('label');
+  label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + name;
+  document.getElementById('customPinsSubgroup').appendChild(label);
+
+  label.querySelector('input').addEventListener('change', function (e) {
+    const marker = categories[categories.length - 1].markers[id];
+    if (e.target.checked) {
+      marker.addTo(map);
+      const el = marker.getElement();
+      if (el) el.classList.add('fade-in');
+    } else {
+      const el = marker.getElement();
+      if (el) {
+        el.classList.remove('fade-in');
+        el.classList.add('fade-out');
+        setTimeout(function () {
+          map.removeLayer(marker);
+          el.classList.remove('fade-out');
+        }, 300);
+      } else {
+        map.removeLayer(marker);
+      }
+    }
     saveCustomPins();
-  
-    const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
-    if (groupCheckbox && !groupCheckbox.checked) {
-      groupCheckbox.checked = true;
-      groupCheckbox.dispatchEvent(new Event('change'));
-    }
-  
-    const toggleBtn = document.getElementById('toggleCustomPinsBtn');
-    if (toggleBtn && !toggleBtn.classList.contains('open')) {
-      toggleBtn.click();
-    }
+  });
+}
+
+function editPin(id) {
+  const newName = prompt("Nowa nazwa pinezki:");
+  if (!newName) return;
+
+  const marker = categories[categories.length - 1].markers[id];
+  if (!marker) return;
+
+  marker.setPopupContent(createPopupContent(id, newName));
+
+  const input = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
+  if (input) {
+    const checked = input.checked;
+    const label = input.parentElement;
+    label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + newName;
+    addCustomPinListeners();
   }
-  
-  function createPopupContent(id, name) {
-    return (
-      '<strong>' + name + '</strong><br>' +
-      '<div class="popup-btn-group">' +
-        '<button class="popup-btn" onclick="editPin(\'' + id + '\')">✏️ Edytuj</button>' +
-        '<button class="popup-btn" onclick="deletePin(\'' + id + '\')">🗑️ Usuń</button>' +
-        '<button class="popup-btn" onclick="sharePin(\'' + id + '\')">🔗 Udostępnij</button>' +
-      '</div>'
-    );
+
+  saveCustomPins();
+}
+
+function deletePin(id) {
+  const marker = categories[categories.length - 1].markers[id];
+  if (marker) {
+    map.removeLayer(marker);
   }
-  
-  function addCustomPinToSidebar(id, name, checked) {
-    const label = document.createElement('label');
-    label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + name;
-    document.getElementById('customPinsSubgroup').appendChild(label);
-  
-    label.querySelector('input').addEventListener('change', function (e) {
+  delete categories[categories.length - 1].markers[id];
+
+  const checkbox = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
+  if (checkbox && checkbox.parentElement) {
+    checkbox.parentElement.remove();
+  }
+
+  saveCustomPins();
+}
+
+function sharePin(id) {
+  const marker = categories[categories.length - 1].markers[id];
+  if (!marker) return;
+
+  const popup = marker.getPopup();
+  const nameMatch = popup.getContent().match(/<strong>(.*?)<\/strong>/);
+  const name = nameMatch ? nameMatch[1] : 'Pinezka';
+  const latlng = marker.getLatLng();
+  const x = Math.round(latlng.lng);
+  const y = Math.round(mapHeight - latlng.lat);
+
+  const pinText = `${name};${x};${y};`;
+  navigator.clipboard.writeText(pinText).then(() => {
+    alert('📌 Dane pinezki skopiowane do schowka:\n' + pinText);
+  });
+
+}
+
+function addCustomPinListeners() {
+  document.querySelectorAll('.custom-pin-toggle').forEach(function (cb) {
+    cb.addEventListener('change', function (e) {
+      const id = e.target.dataset.id;
       const marker = categories[categories.length - 1].markers[id];
+
       if (e.target.checked) {
         marker.addTo(map);
         const el = marker.getElement();
@@ -829,149 +899,107 @@ const cursors = {
           map.removeLayer(marker);
         }
       }
-      saveCustomPins();
     });
-  }
-  
-  function editPin(id) {
-    const newName = prompt("Nowa nazwa pinezki:");
-    if (!newName) return;
-  
-    const marker = categories[categories.length - 1].markers[id];
-    if (!marker) return;
-  
-    marker.setPopupContent(createPopupContent(id, newName));
-  
-    const input = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
-    if (input) {
-      const checked = input.checked;
-      const label = input.parentElement;
-      label.innerHTML = '<input type="checkbox" class="custom-pin-toggle" data-id="' + id + '"' + (checked ? ' checked' : '') + '> ' + newName;
-      addCustomPinListeners();
-    }
-  
-    saveCustomPins();
-  }
-  
-  function deletePin(id) {
-    const marker = categories[categories.length - 1].markers[id];
-    if (marker) {
-      map.removeLayer(marker);
-    }
-    delete categories[categories.length - 1].markers[id];
-  
-    const checkbox = document.querySelector('.custom-pin-toggle[data-id="' + id + '"]');
-    if (checkbox && checkbox.parentElement) {
-      checkbox.parentElement.remove();
-    }
-  
-    saveCustomPins();
-  }
-  
-  function sharePin(id) {
-    const marker = categories[categories.length - 1].markers[id];
-    if (!marker) return;
-  
-    const popup = marker.getPopup();
-    const nameMatch = popup.getContent().match(/<strong>(.*?)<\/strong>/);
-    const name = nameMatch ? nameMatch[1] : 'Pinezka';
+  });
+}
+
+function saveCustomPins() {
+  const pins = [];
+  const markers = categories[categories.length - 1].markers;
+
+  Object.entries(markers).forEach(function ([id, marker]) {
     const latlng = marker.getLatLng();
-    const x = Math.round(latlng.lng);
-    const y = Math.round(mapHeight - latlng.lat);
-  
-    const pinText = `${name};${x};${y};`;
-    navigator.clipboard.writeText(pinText).then(() => {
-      alert('📌 Dane pinezki skopiowane do schowka:\n' + pinText);
+    const popup = marker.getPopup();
+    const match = popup.getContent().match(/<strong>(.*?)<\/strong>/);
+    const name = match ? match[1] : id;
+    const visible = map.hasLayer(marker);
+
+    pins.push({
+      id: id,
+      name: name,
+      lat: latlng.lat,
+      lng: latlng.lng,
+      visible: visible,
+      iconIndex: marker.options.iconIndex ?? 0
+    });
+
   });
-  
+
+  localStorage.setItem('customPins', JSON.stringify(pins));
+}
+
+function loadCustomPins() {
+  const saved = JSON.parse(localStorage.getItem('customPins') || '[]');
+
+  saved.forEach(function (pin) {
+    const marker = L.marker([pin.lat, pin.lng], {
+      icon: customPinIcons[pin.iconIndex] || customPinIcons[0]
+    }).bindPopup(createPopupContent(pin.id, pin.name));
+
+    marker.options.iconIndex = pin.iconIndex;
+
+    if (pin.visible) marker.addTo(map);
+    categories[categories.length - 1].markers[pin.id] = marker;
+
+    addCustomPinToSidebar(pin.id, pin.name, pin.visible);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const sel = document.getElementById('pinIconSelector');
+    sel.style.display = 'none';
   }
-  
-  function addCustomPinListeners() {
-    document.querySelectorAll('.custom-pin-toggle').forEach(function (cb) {
-      cb.addEventListener('change', function (e) {
-        const id = e.target.dataset.id;
-        const marker = categories[categories.length - 1].markers[id];
-  
-        if (e.target.checked) {
-          marker.addTo(map);
-          const el = marker.getElement();
-          if (el) el.classList.add('fade-in');
-        } else {
-          const el = marker.getElement();
-          if (el) {
-            el.classList.remove('fade-in');
-            el.classList.add('fade-out');
-            setTimeout(function () {
-              map.removeLayer(marker);
-              el.classList.remove('fade-out');
-            }, 300);
-          } else {
-            map.removeLayer(marker);
-          }
-        }
-      });
-    });
+});
+
+document.getElementById('closePinSelector').addEventListener('click', () => {
+  document.getElementById('pinIconSelector').style.display = 'none';
+});
+
+document.addEventListener('click', function (e) {
+  const selector = document.getElementById('pinIconSelector');
+  if (!selector) return;
+
+  // jeśli kliknięto poza selektorem i nie był to prawy klik (który otwiera go znowu)
+  if (selector.style.display === 'block' && !selector.contains(e.target)) {
+    selector.style.display = 'none';
   }
-  
-  function saveCustomPins() {
-    const pins = [];
-    const markers = categories[categories.length - 1].markers;
-  
-    Object.entries(markers).forEach(function ([id, marker]) {
-      const latlng = marker.getLatLng();
-      const popup = marker.getPopup();
-      const match = popup.getContent().match(/<strong>(.*?)<\/strong>/);
-      const name = match ? match[1] : id;
-      const visible = map.hasLayer(marker);
-  
-      pins.push({
-        id: id,
-        name: name,
-        lat: latlng.lat,
-        lng: latlng.lng,
-        visible: visible,
-        iconIndex: marker.options.iconIndex ?? 0
-      });
-  
-    });
-  
-    localStorage.setItem('customPins', JSON.stringify(pins));
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  // Obsługa zoomu
+  const zoomInBtn = document.getElementById('zoomIn');
+  const zoomOutBtn = document.getElementById('zoomOut');
+
+  if (zoomInBtn && zoomOutBtn) {
+    zoomInBtn.addEventListener('click', () => map.zoomIn());
+    zoomOutBtn.addEventListener('click', () => map.zoomOut());
   }
-  
-  function loadCustomPins() {
-    const saved = JSON.parse(localStorage.getItem('customPins') || '[]');
-  
-    saved.forEach(function (pin) {
-      const marker = L.marker([pin.lat, pin.lng], {
-        icon: customPinIcons[pin.iconIndex] || customPinIcons[0]
-      }).bindPopup(createPopupContent(pin.id, pin.name));
-  
-      marker.options.iconIndex = pin.iconIndex;
-  
-      if (pin.visible) marker.addTo(map);
-      categories[categories.length - 1].markers[pin.id] = marker;
-  
-      addCustomPinToSidebar(pin.id, pin.name, pin.visible);
-    });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const infoButton = document.getElementById("infoButton");
+  const modal = document.getElementById("infoModal");
+  const modalContent = modal.querySelector(".modal-content");
+  const closeBtn = modal.querySelector(".close");
+
+  function closeInfoModal() {
+    modal.style.display = "none";
   }
-  
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const sel = document.getElementById('pinIconSelector');
-      sel.style.display = 'none';
+
+  infoButton.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+
+  closeBtn.addEventListener("click", closeInfoModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeInfoModal();
     }
   });
-  
-  document.getElementById('closePinSelector').addEventListener('click', () => {
-    document.getElementById('pinIconSelector').style.display = 'none';
+
+  modalContent.addEventListener("click", (e) => {
+    e.stopPropagation();
   });
-  
-  document.addEventListener('click', function (e) {
-    const selector = document.getElementById('pinIconSelector');
-    if (!selector) return;
-  
-    // jeśli kliknięto poza selektorem i nie był to prawy klik (który otwiera go znowu)
-    if (selector.style.display === 'block' && !selector.contains(e.target)) {
-      selector.style.display = 'none';
-    }
-  });
+});

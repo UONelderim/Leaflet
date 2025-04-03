@@ -624,3 +624,89 @@ textarea,
 #controls.collapsed #versionInfo {
     display: none;
 }
+
+#infoButton {
+    background: none;
+    border: none;
+    color: rgba(240, 215, 170, 0.7);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 6px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    transition: color 0.3s ease;
+}
+
+#infoButton:hover {
+    color: #b08e53;
+}
+
+#controls.collapsed #infoButton {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background: #1e1e1e;
+    color: #f5f0e6;
+    margin: 10% auto;
+    padding: 20px;
+    border: 2px solid #b08e53;
+    width: fit-content;
+    max-width: 90%;
+    font-family: 'MedievalSharp', cursive;
+    box-shadow: 0 0 12px #000;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.modal-content h2 {
+    color: #b08e53;
+    font-family: 'MedievalSharp', cursive;
+}
+
+.modal-content .close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #b08e53;
+}
+
+.modal-content .close:hover {
+    color: #fff2b0;
+    text-shadow: 0 0 8px #b08e53;
+}
+
+.dash-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.dash-list li {
+    margin-bottom: 10px;
+}
+
+.dash-list li::before {
+    content: "- ";
+    color: #b08e53;
+}
+
+.inline-icon {
+    width: 18px;
+    height: auto;
+    vertical-align: top;
+    margin: 0 2px;
+}
+
+  
