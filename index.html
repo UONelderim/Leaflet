@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa Nelderim</title>
+  <link rel="icon" type="image/png" href="favicon_nelderim.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="pinIconSelector">
+    <div class="pin-icon-header">
+      <button id="closePinSelector">×</button>
+    </div>
+    <div class="pin-icon-title">Wybierz kolor znacznika:</div>
+    <div id="pinIcons"></div>
+  </div>
+  </div>
+  <!-- Kontrolki, mapa i współrzędne -->
+  <div id="mainLayout">
+    <div id="controls">
+
+      <div class="hide-when-collapsed">
+        <div id="logoContainer">
+          <a href="https://nelderim.pl" target="_blank" rel="noopener noreferrer">
+            <img src="assets/logotyp-new.png" alt="Nelderim logo">
+          </a>
+        </div>
+
+        <div id="searchWrapper">
+          <input type="text" id="searchBox" placeholder="Szukaj lub dodaj udostępnienie...">
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleCitiesGroup">
+            <span>Miasta</span>
+          </div>
+          <div id="toggleCitiesBtn" class="toggle-button"></div>
+        </div>
+        <div id="citiesSubgroup" class="subgroup"></div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleVillagesGroup">
+            <span>Wioski</span>
+          </div>
+          <div id="toggleVillagesBtn" class="toggle-button"></div>
+        </div>
+        <div id="villagesSubgroup" class="subgroup"></div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleDungeonsGroup">
+            <span>Lochy</span>
+          </div>
+          <div id="toggleDungeonsBtn" class="toggle-button"></div>
+        </div>
+        <div id="dungeonsSubgroup" class="subgroup"></div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleHealersGroup">
+            <span>Uzdrowiciele</span>
+          </div>
+          <div id="toggleHealersBtn" class="toggle-button"></div>
+        </div>
+        <div id="healersSubgroup" class="subgroup"></div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleAnkhGroup">
+            <span>Ankh</span>
+          </div>
+          <div id="toggleAnkhBtn" class="toggle-button"></div>
+        </div>
+        <div id="ankhSubgroup" class="subgroup"></div>
+
+        <div class="control-row">
+          <div class="left">
+            <input type="checkbox" id="toggleCustomPinsGroup">
+            <span>Własne Lokacje</span>
+          </div>
+          <div id="toggleCustomPinsBtn" class="toggle-button"></div>
+        </div>
+        <div id="customPinsSubgroup" class="subgroup"></div>
+
+        <div id="coordsDisplay">
+          <div class="coords-inline">
+            <span class="coord-x">X: 0</span>
+            <span class="coord-y">Y: 0</span>
+          </div>
+        </div>
+        <div id="zoomControl">
+          <button id="zoomIn">+</button>
+          <button id="zoomOut">-</button>
+        </div>
+      </div>
+
+      <div id="sidebarBottom">
+        <div id="versionInfo">v1.2.1 Beta</div>
+        <div id="sidebarToggle" title="Zwiń / Rozwiń"></div>
+      </div>
+      
+
+    </div>
+    <div id="map"></div>
+  </div>
+  <script src="scripts.js"></script>
+</body>
+
+</html>
