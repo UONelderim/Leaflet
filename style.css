@@ -657,6 +657,7 @@ textarea,
 }
 
 .modal-content {
+    position: relative;
     background: #1e1e1e;
     color: #f5f0e6;
     margin: 10% auto;
@@ -671,16 +672,20 @@ textarea,
     word-break: break-word;
 }
 
-.modal-content h2 {
+.modal-content h1 {
     color: #b08e53;
     font-family: 'MedievalSharp', cursive;
 }
 
 .modal-content .close {
-    float: right;
-    font-size: 24px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 22px;
     cursor: pointer;
     color: #b08e53;
+    line-height: 1;
+    padding: 0;
 }
 
 .modal-content .close:hover {
@@ -691,11 +696,13 @@ textarea,
 .dash-list {
     list-style: none;
     padding-left: 0;
+    font-size: 20px;
 }
 
 .dash-list li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
+
 
 .dash-list li::before {
     content: "- ";
@@ -703,10 +710,18 @@ textarea,
 }
 
 .inline-icon {
-    width: 18px;
+    width: 22px;
     height: auto;
     vertical-align: top;
     margin: 0 2px;
+}
+
+.info-discord {
+    font-size: 20px;
+    color: #f5f0e6;
+    margin: auto;
+    font-family: 'MedievalSharp', cursive;
+    text-align: center;
 }
 
   
