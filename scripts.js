@@ -54,6 +54,9 @@ const dungeonIcon = L.icon({ iconUrl: 'assets/Gump 9804.png', iconSize: [27, 20]
 const villageIcon = L.icon({ iconUrl: 'assets/Gump 40118.png', iconSize: [50, 50], iconAnchor: [25, 25] });
 const healerIcon = L.icon({ iconUrl: 'assets/HealerIcon.png', iconSize: [20, 30], iconAnchor: [10, 30] });
 const ankhIcon = L.icon({ iconUrl: 'assets/ankh.png', iconSize: [16, 26], iconAnchor: [8, 13] });
+const championIcon = L.icon({ iconUrl: 'assets/champion.png', iconSize: [30, 55], iconAnchor: [15, 28] });
+const moongateIcon = L.icon({ iconUrl: 'assets/moongate.png', iconSize: [16, 36], iconAnchor: [8, 18] });
+
 
 const cityData = {
   tasandora: [1418, 1872, "Tasandora"],
@@ -249,6 +252,35 @@ const ankhData = {
 const customAnkh = {};
 const ankhSubgroup = document.getElementById("ankhSubgroup");
 
+const championData = {
+  Morena: [1100, 1281, "Morena"],
+  Rikktor: [630, 1171, "Rikktor"],
+  Serado: [1741, 3264, "Serado"],
+  Mephitis: [1693, 2714, "Mephitis"],
+  Semidar: [6056, 3973, "Semidar"],
+  Baracoon: [5551, 466, "Baracoon"],
+  LordOaks: [3305, 1923, "Lord Oaks"],
+  StaryFeniks: [4110, 1223, "Stary Feniks"],
+  Meraktus: [3200, 2676, "Meraktus"],
+  Twaulo: [3119, 1251, "Twaulo"],
+  Kapitan: [2841, 1237, "Kapitan III Legionu Orków"],
+};
+const customChampions = {};
+const championsSubgroup = document.getElementById("championsSubgroup");
+
+const moongateData = {
+  moongate1: [1515, 2183, "Moongate Tasandora"],
+  moongate2: [851, 739, "Moongate Garlan"],
+  moongate3: [543, 1840, "Moongate Orod"],
+  moongate4: [2004, 2875, "Moongate Tirassa"],
+  moongate5: [2462, 1859, "Moongate Twierdza"],
+  moongate6: [1966, 554, "Moongate Lotharn"],
+  moongate7: [2696, 784, "Moongate Imloth"],
+};
+
+const customMoongates = {};
+const moongateSubgroup = document.getElementById("moongateSubgroup");
+
 const customPinIcons = [
   L.icon({ iconUrl: 'assets/RedPin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
   L.icon({ iconUrl: 'assets/OrangePin.png', iconSize: [12, 27], iconAnchor: [6, 27] }),
@@ -265,9 +297,9 @@ const categories = [
   { data: villageData, markers: customVillages, icon: villageIcon, subgroup: villagesSubgroup, className: 'village-toggle' },
   { data: healerData, markers: customHealers, icon: healerIcon, subgroup: healersSubgroup, className: 'healer-toggle' },
   { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' },
+  { data: championData, markers: customChampions, icon: championIcon, subgroup: championsSubgroup, className: 'champion-toggle' },
+  { data: moongateData, markers: customMoongates, icon: moongateIcon, subgroup: moongateSubgroup, className: 'moongate-toggle' },
   { data: {}, markers: {}, icon: L.icon({ iconUrl: 'assets/PinkPin.png', iconSize: [12, 27], iconAnchor: [5, 27] }), subgroup: document.getElementById("customPinsSubgroup"), className: 'custom-pin-toggle' }
-
-
 ];
 
 categories.forEach(({ data, markers, icon, subgroup, className }) => {
@@ -288,7 +320,9 @@ const toggleConfigs = [
   { selector: '.dungeon-toggle', markers: customDungeons },
   { selector: '.village-toggle', markers: customVillages },
   { selector: '.healer-toggle', markers: customHealers },
-  { selector: '.ankh-toggle', markers: customAnkh }
+  { selector: '.ankh-toggle', markers: customAnkh },
+  { selector: '.champion-toggle', markers: customChampions },
+  { selector: '.moongate-toggle', markers: customMoongates }
 ];
 
 toggleConfigs.push({
@@ -330,8 +364,9 @@ const subgroupStates = {
   toggleDungeonsBtn: { groupId: 'dungeonsSubgroup' },
   toggleHealersBtn: { groupId: 'healersSubgroup' },
   toggleAnkhBtn: { groupId: 'ankhSubgroup' },
-  toggleCustomPinsBtn: { groupId: 'customPinsSubgroup' }
-
+  toggleChampionsBtn: { groupId: 'championsSubgroup' },
+  toggleCustomPinsBtn: { groupId: 'customPinsSubgroup' },
+  toggleMoongateBtn: { groupId: 'moongateSubgroup' }
 };
 
 Object.entries(subgroupStates).forEach(([btnId, state]) => {
@@ -416,7 +451,10 @@ const groupToggles = [
   { groupId: 'toggleVillagesGroup', className: '.village-toggle' },
   { groupId: 'toggleHealersGroup', className: '.healer-toggle' },
   { groupId: 'toggleAnkhGroup', className: '.ankh-toggle' },
-  { groupId: 'toggleCustomPinsGroup', className: '.custom-pin-toggle' }
+  { groupId: 'toggleChampionsGroup', className: '.champion-toggle' },
+  { groupId: 'toggleCustomPinsGroup', className: '.custom-pin-toggle' },
+  { groupId: 'toggleMoongateGroup', className: '.moongate-toggle' }
+
 ];
 
 groupToggles.forEach(({ groupId, className }) => {
@@ -481,6 +519,8 @@ const allSubgroups = [
   { btn: 'toggleDungeonsBtn', group: 'dungeonsSubgroup' },
   { btn: 'toggleHealersBtn', group: 'healersSubgroup' },
   { btn: 'toggleAnkhBtn', group: 'ankhSubgroup' },
+  { btn: 'toggleChampionsBtn', group: 'championsSubgroup' },
+  { btn: 'toggleMoongateBtn', group: 'moongateSubgroup' },
   { btn: 'toggleCustomPinsBtn', group: 'customPinsSubgroup' }
 ];
 
