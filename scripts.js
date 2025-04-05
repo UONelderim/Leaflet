@@ -669,8 +669,8 @@ const cursors = {
 };
 
 const clickStages = [
-  { file: 'click1st_stage.png', hotspot: [1, 1] },
-  { file: 'click2nd_stage.png', hotspot: [1, 7] },
+  { file: 'assets/click1st_stage.png', hotspot: [1, 1] },
+  { file: 'assets/click2nd_stage.png', hotspot: [1, 7] },
   { file: 'assets/click3rd_stage.png', hotspot: [4, 4] }
 ];
 
