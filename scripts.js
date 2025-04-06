@@ -9,6 +9,8 @@ const map = L.map('map', {
   zoom: -2,
   zoomControl: false // tylko to dodajemy
 });
+const version = "v1.2.5-Beta";
+const commitId = ""; // This have to be empty!!!
 
 const bounds = [[0, 0], [mapHeight, mapWidth]];
 L.imageOverlay('assets/mapa_serwera.png', bounds).addTo(map);
@@ -1042,4 +1044,14 @@ window.addEventListener("DOMContentLoaded", () => {
   modalContent.addEventListener("click", (e) => {
     e.stopPropagation();
   });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  x = document.getElementById("versionInfo");
+  if(commitId) {
+    x.innerHTML = version + "-" + commitId;
+  }
+  else{
+    x.innerHTML = version;
+  }
 });
